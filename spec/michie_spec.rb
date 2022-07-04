@@ -1,6 +1,7 @@
 RSpec.describe Michie do
   before do
     stub_const("Listener", double("listener"))
+    stub_const("OtherListener", double("listener"))
   end
 
   it "has a version number" do
@@ -26,6 +27,44 @@ RSpec.describe Michie do
     end
 
     expect(foo.instance_variables).to eq([:"@__michie_my_method"])
+  end
+
+  it "memoizes methods passed as args" do
+    klass = Class.new do
+      extend Michie
+
+      def method1
+        Listener.call
+      end
+      def method2
+        OtherListener.call
+      end
+
+      memoize :method1, :method2
+    end
+
+    foo = klass.new
+
+    expect(Listener).to receive(:call).once.and_return("result")
+    2.times { expect(foo.method1).to eq("result") }
+    expect(foo.instance_variables).to eq([:"@__michie_method1"])
+
+    expect(OtherListener).to receive(:call).once.and_return("result")
+    2.times { expect(foo.method2).to eq("result") }
+    expect(foo.instance_variables).to match_array(
+      [:"@__michie_method1", :"@__michie_method2"]
+    )
+  end
+
+  it "raises ArgumentError if passed both method(s) and block" do
+    klass = Class.new do
+      extend Michie
+    end
+
+    expect {
+      klass.memoize(:foo) do
+      end
+    }.to raise_error(ArgumentError, "memoize takes method names or a block defining methods, not both.")
   end
 
   it "handles bang methods" do

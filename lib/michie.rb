@@ -4,10 +4,16 @@ require "michie/version"
 module Michie
   DEFAULT_IVAR_PREFIX = "__michie"
 
-  def memoize(eager: false, prefix: DEFAULT_IVAR_PREFIX, &block)
-    methods_before = instance_methods(false) + private_instance_methods(false)
-    block.call
-    methods_to_memoize = instance_methods(false) + private_instance_methods(false) - methods_before
+  def memoize(*args, eager: false, prefix: DEFAULT_IVAR_PREFIX)
+    if block_given? && !args.empty?
+      raise ArgumentError, "memoize takes method names or a block defining methods, not both."
+    elsif block_given?
+      methods_before = instance_methods(false) + private_instance_methods(false)
+      yield
+      methods_to_memoize = instance_methods(false) + private_instance_methods(false) - methods_before
+    elsif !args.empty?
+      methods_to_memoize = args
+    end
 
     memoizer = eager ? EagerMemoizer : Memoizer
 
