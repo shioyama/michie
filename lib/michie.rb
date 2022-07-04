@@ -5,9 +5,9 @@ module Michie
   DEFAULT_IVAR_PREFIX = "__michie"
 
   def memoize(eager: false, prefix: DEFAULT_IVAR_PREFIX, &block)
-    methods_before = instance_methods(false)
+    methods_before = instance_methods(false) + private_instance_methods(false)
     block.call
-    methods_to_memoize = instance_methods(false) - methods_before
+    methods_to_memoize = instance_methods(false) + private_instance_methods(false) - methods_before
 
     memoizer = eager ? EagerMemoizer : Memoizer
 
@@ -36,6 +36,16 @@ module Michie
 
     def inspect
       "<##{self.class} (methods: #{instance_methods(false).join(", ")})>"
+    end
+
+    def prepended(klass)
+      memoized_methods = instance_methods(false)
+      (klass.protected_instance_methods(false) & memoized_methods).each do |method_name|
+        protected method_name
+      end
+      (klass.private_instance_methods(false) & memoized_methods).each do |method_name|
+        private method_name
+      end
     end
   end
 

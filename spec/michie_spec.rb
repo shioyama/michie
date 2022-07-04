@@ -110,6 +110,29 @@ RSpec.describe Michie do
     expect(foo.instance_variables).to eq([:"@foo_my_method"])
   end
 
+  it "maintains visibility of memoized methods" do
+    klass = Class.new do
+      extend Michie
+
+      memoize(prefix: "foo") do
+        def public_method
+        end
+
+        def protected_method
+        end
+        protected :protected_method
+
+        def private_method
+        end
+        private :private_method
+      end
+    end
+
+    expect(klass.public_instance_methods).to include(:public_method)
+    expect(klass.protected_instance_methods).to include(:protected_method)
+    expect(klass.private_instance_methods).to include(:private_method)
+  end
+
   it "accepts eager option to eager-evaluate methods" do
     klass = Class.new do
       extend Michie
