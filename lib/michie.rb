@@ -73,13 +73,15 @@ module Michie
 
   module Helpers
     def ivar_name(method_name, memoization_prefix)
-      string = "#{memoization_prefix}_#{method_name.to_s}"
+      string = String === method_name ? method_name.dup : method_name.to_s
+      method_type_prefix = "m"
 
-      if string.end_with?("?", "!")
-        string = string.dup
-        string.sub!(/\?\Z/, "_query") || string.sub!(/!\Z/, "_bang")
+      if string.chomp!("?")
+        method_type_prefix = "q"
+      elsif string.chomp!("!")
+        method_type_prefix = "b"
       end
-      "@#{string}"
+      "@#{memoization_prefix}_#{method_type_prefix}_#{string}"
     end
     module_function :ivar_name
   end

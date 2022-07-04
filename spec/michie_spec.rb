@@ -26,7 +26,7 @@ RSpec.describe Michie do
       expect(foo.my_method).to eq("result")
     end
 
-    expect(foo.instance_variables).to eq([:"@__michie_my_method"])
+    expect(foo.instance_variables).to eq([:"@__michie_m_my_method"])
   end
 
   it "memoizes methods passed as args" do
@@ -47,12 +47,12 @@ RSpec.describe Michie do
 
     expect(Listener).to receive(:call).once.and_return("result")
     2.times { expect(foo.method1).to eq("result") }
-    expect(foo.instance_variables).to eq([:"@__michie_method1"])
+    expect(foo.instance_variables).to eq([:"@__michie_m_method1"])
 
     expect(OtherListener).to receive(:call).once.and_return("result")
     2.times { expect(foo.method2).to eq("result") }
     expect(foo.instance_variables).to match_array(
-      [:"@__michie_method1", :"@__michie_method2"]
+      [:"@__michie_m_method1", :"@__michie_m_method2"]
     )
   end
 
@@ -127,9 +127,9 @@ RSpec.describe Michie do
     foo.my_method?
 
     expect(foo.instance_variables).to match_array([
-      :"@__michie_my_method",
-      :"@__michie_my_method_bang",
-      :"@__michie_my_method_query"
+      :"@__michie_m_my_method",
+      :"@__michie_b_my_method",
+      :"@__michie_q_my_method"
     ])
   end
 
@@ -146,7 +146,7 @@ RSpec.describe Michie do
     foo = klass.new
     foo.my_method
 
-    expect(foo.instance_variables).to eq([:"@foo_my_method"])
+    expect(foo.instance_variables).to eq([:"@foo_m_my_method"])
   end
 
   it "maintains visibility of memoized methods" do
