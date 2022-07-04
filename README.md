@@ -6,9 +6,10 @@
 [gem]: https://rubygems.org/gems/michie
 [actions]: https://github.com/shioyama/michie/actions
 
-Michie (pronounced /ˈmɪki/, like “Mickey”) memoizes methods defined in a block.
-Unlike other meomization libraries, Michie encapsulates its memoization in
-a single module which it prepends over the original method.
+Michie (pronounced /ˈmɪki/, like “Mickey”) memoizes methods either passed by
+method name or defined in a block. Unlike other meomization libraries, Michie
+encapsulates its memoization in a single module which it prepends over the
+original method.
 
 ## Usage
 
@@ -25,6 +26,22 @@ class BillingApi
     end
   end
 end
+```
+
+Alternatively, you can pass the method name(s) to `memoize` after they have
+been defined:
+
+```ruby
+class BillingApi
+  extend Michie
+
+  def fetch_aggregate_data
+	# returns all data from remote server
+  end
+  memoize :fetch_aggregate_data
+end
+```
+
 
 api = BillingApi.new
 api.fetch_aggregate_data
