@@ -1,5 +1,11 @@
 # Michie
 
+[![Gem Version](https://badge.fury.io/rb/michie.svg)][gem]
+[![Build Status](https://github.com/shioyama/michie/actions/workflows/ruby.yml/badge.svg)][actions]
+
+[gem]: https://rubygems.org/gems/michie
+[actions]: https://github.com/shioyama/michie/actions
+
 Michie (pronounced /ˈmɪki/, like “Mickey”) memoizes methods defined in a block.
 Unlike other meomization libraries, Michie encapsulates its memoization in
 a single module which it prepends over the original method.
