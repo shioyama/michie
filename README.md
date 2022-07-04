@@ -21,8 +21,8 @@ class BillingApi
 
   memoize do
     def fetch_aggregate_data
-	  # returns all data from remote server
-	end
+      # returns all data from remote server
+    end
   end
 end
 
@@ -80,8 +80,8 @@ class BillingApi
 
   memoize(eager: true) do
     def fetch_aggregate_data
-	  # returns all data from remote server
-	end
+      # returns all data from remote server
+    end
   end
 end
 
