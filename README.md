@@ -30,7 +30,7 @@ class BillingApi
 
   memoize do
     def fetch_aggregate_data
-      # returns all data from remote server
+      # time-consuming request
     end
   end
 end
@@ -44,7 +44,7 @@ class BillingApi
   extend Michie
 
   def fetch_aggregate_data
-    # returns all data from remote server
+    # ...
   end
   memoize :fetch_aggregate_data
 end
@@ -110,7 +110,7 @@ class BillingApi
 
   memoize(eager: true) do
     def fetch_aggregate_data
-      # returns all data from remote server
+      # ...
     end
   end
 end
