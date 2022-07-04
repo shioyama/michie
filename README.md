@@ -11,6 +11,14 @@ method name or defined in a block. Unlike other meomization libraries, Michie
 encapsulates its memoization in a single module which it prepends over the
 original method.
 
+## Installation
+
+Add Michie to your gemfile:
+
+```ruby
+gem "michie", "~> 0.2.0"
+```
+
 ## Usage
 
 Simply extend a class with `Michie` and define methods in a block passed to the
@@ -36,13 +44,15 @@ class BillingApi
   extend Michie
 
   def fetch_aggregate_data
-	# returns all data from remote server
+    # returns all data from remote server
   end
   memoize :fetch_aggregate_data
 end
 ```
 
+The method(s) are now memoized:
 
+```ruby
 api = BillingApi.new
 api.fetch_aggregate_data
 #=> (calls original #fetch_aggregate_data method, fetching and returning data from server)
@@ -51,7 +61,7 @@ api.fetch_aggregate_data
 #=> returns value memoized by Michie
 ```
 
-Unlike other memoization libraries which use `alias_method` to reference the
+Unlike other memoization libraries that use `alias_method` to reference the
 original method, leaving artifacts in the including class, memoization in
 Michie is encapsulated in a module.
 
