@@ -55,7 +55,7 @@ The method(s) are now memoized:
 ```ruby
 api = BillingApi.new
 api.fetch_aggregate_data
-#=> (calls original #fetch_aggregate_data method, fetching and returning data from server)
+#=> (calls original #fetch_aggregate_data method)
 
 api.fetch_aggregate_data
 #=> returns value memoized by Michie
@@ -69,7 +69,7 @@ This module is dynamically created and prepended by `Michie#memoize`:
 
 ```ruby
 BillingApi.ancestors
-#=> [<#Michie::Memoizer (methods: fetch_aggregate_data)>, BillingApi, Object, PP::ObjectMixin, Kernel, BasicObject]
+#=> [<#Michie::Memoizer (methods: fetch_aggregate_data)>, BillingApi, Object, Kernel, BasicObject]
 
 memoizer = BillingApi.ancestors[0]
 memoizer.instance_methods(false)
@@ -81,10 +81,10 @@ from the original method, and calls the original method with `super`:
 
 ```ruby
 def fetch_aggregate_data
-  return @__michie_fetch_aggregate_data if defined?(@__michie_fetch_aggregate_data)
+  return @__michie_m_fetch_aggregate_data if defined?(@__michie_m_fetch_aggregate_data)
 
   result = super
-  @__michie_fetch_aggregate_data = result
+  @__michie_m_fetch_aggregate_data = result
   result
 end
 ```
