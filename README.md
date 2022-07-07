@@ -92,9 +92,9 @@ end
 By default, Michie generates an instance variable name prefix combining a
 "base" string `__michie_` with either an `m_` (normal methods), `b_` (bang
 methods ending in `!`) or `q_` (query methods ending in `?`). This prefix is
-combined with the method name of the method to be memoized to generate the
-instance variable name.  The base prefix can be changed by passing a `prefix`
-option to `memoize` (see specs for details).
+combined with the name of the method to be memoized to generate the instance
+variable name.  The base prefix can be changed by passing a `prefix` option to
+`memoize` (see specs for details).
 
 Since Michie uses the presence of an instance variable to signal memoization,
 `false` and `nil` values can be memoized (unlike techniques which use `||=`).
